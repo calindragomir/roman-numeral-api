@@ -25,7 +25,7 @@ public class IntegerRomanConverter implements Converter {
     };
 
     @Override
-    public List<String> convert(int from, int to) {
+    public List<String> convert(Integer from, Integer to) {
         return IntStream.rangeClosed(from, to)
                 .boxed()
                 .map(this::integerConverter)

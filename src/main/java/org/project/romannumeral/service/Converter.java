@@ -10,6 +10,6 @@ public interface Converter {
      * @param to inclusive end of range to convert
      * @return List of String objects converted by the services that implement this interface
      */
-    List<String> convert(int from, int to);
+    List<String> convert(Integer from, Integer to);
 
 }
