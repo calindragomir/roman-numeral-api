@@ -1,3 +1,6 @@
 # Documentation
 
-This is where more detailed documentation will live.
+### Open API
+
+Swagger UI documentation is available at:\
+http://localhost:8080/swagger-ui/index.html

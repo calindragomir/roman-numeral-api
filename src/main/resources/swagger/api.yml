@@ -1,0 +1,75 @@
+openapi: 3.0.0
+info:
+  title: Integer to Roman Numerals API
+  description: Rest API service to convert range of Integers to Roman Numerals
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1/
+    description: Production server
+
+paths:
+  /convert/integers:
+    post:
+      summary: Convert Integers to Roman Numerals
+      operationId: convertIntegerToRoman
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IntegerRangeRequest"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RomanNumeralsResponse"
+        400:
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageResponse'
+
+components:
+  schemas:
+    IntegerRangeRequest:
+      type: object
+      description: Request object that sets the range of numbers to be converted
+      properties:
+        from:
+          minimum: 1
+          maximum: 3999
+          type: integer
+        to:
+          minimum: 1
+          maximum: 3999
+          type: integer
+      example:
+        from: 1
+        to: 5
+      required:
+        - from
+        - to
+
+    RomanNumeralsResponse:
+      type: array
+      description: Array of Roman Numerals after conversion
+      items:
+        type: string
+      example: ["I", "II", "III", "IV", "V"]
+
+    ErrorMessageResponse:
+      type: object
+      description: Detailed error message
+      required:
+        - errorCount
+      properties:
+        errorCount:
+          type: integer
+        errors:
+          type: array
+          items:
+            type: string

@@ -15,30 +15,66 @@
 	<description>Spring Boot application for Roman Numerals</description>
 	<properties>
 		<java.version>21</java.version>
+		<spring-boot.version>${project.parent.version}</spring-boot.version>
+		<junit.version>4.13.2</junit.version>
+		<lombok.version>1.18.32</lombok.version>
+		<jackson-databind-nullable.version>0.2.4</jackson-databind-nullable.version>
+		<swagger-annotations.version>1.6.8</swagger-annotations.version>
+		<openapi-generator-maven-plugin.version>7.6.0</openapi-generator-maven-plugin.version>
+		<jakarta-validation.version>3.1.0</jakarta-validation.version>
+		<springdoc-openapi-webmvc-ui.version>2.5.0</springdoc-openapi-webmvc-ui.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc-openapi-webmvc-ui.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+			<version>${spring-boot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>${jackson-databind-nullable.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-annotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>${jakarta-validation.version}</version>
+		</dependency>
+
+		<!-- TESTING -->
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring-boot.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
+			<version>${junit.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -55,7 +91,35 @@
 						</exclude>
 					</excludes>
 				</configuration>
-			</plugin>
+			</plugin><plugin>
+			<groupId>org.openapitools</groupId>
+			<artifactId>openapi-generator-maven-plugin</artifactId>
+			<version>${openapi-generator-maven-plugin.version}</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>generate</goal>
+					</goals>
+					<configuration>
+						<inputSpec>
+							${project.basedir}/src/main/resources/swagger/api.yml
+						</inputSpec>
+						<generatorName>spring</generatorName>
+						<apiPackage>org.project.openapi.api</apiPackage>
+						<modelPackage>org.project.openapi.dto</modelPackage>
+						<supportingFilesToGenerate>
+							ApiUtil.java
+						</supportingFilesToGenerate>
+						<configOptions>
+							<useBeanValidation>true</useBeanValidation>
+							<useJakartaEe>true</useJakartaEe>
+							<delegatePattern>true</delegatePattern>
+							<serializableModel>true</serializableModel>
+						</configOptions>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
 		</plugins>
 	</build>
 

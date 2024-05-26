@@ -23,7 +23,7 @@ public class IntegerRomanConverterTest {
 
         List<String> expected = List.of("I","II","III","IV","V");
 
-        assertEquals(expected, this.integerRomanConverter.convert(from, to));
+        assertEquals(expected, integerRomanConverter.convert(from, to));
     }
 
 }

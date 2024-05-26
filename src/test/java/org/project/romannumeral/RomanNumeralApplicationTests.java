@@ -2,8 +2,8 @@ package org.project.romannumeral;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.project.romannumeral.model.ErrorFieldsResponse;
-import org.project.romannumeral.model.IntegerRangeRequest;
+import org.project.openapi.dto.ErrorMessageResponse;
+import org.project.openapi.dto.IntegerRangeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class RomanNumeralApplicationTests {
 	private static final String APP_MAIN_ROUTE = "/api/v1/convert/integers";
+	private static final String ERROR_MSG_FORMAT = "Field `%s` has an error: %s";
 
 	@Autowired
 	MockMvc mockMvc;
@@ -33,10 +33,9 @@ class RomanNumeralApplicationTests {
 
 	@Test
 	void testNormalCaseWorks() throws Exception {
-		IntegerRangeRequest request = IntegerRangeRequest.builder()
+		IntegerRangeRequest request = new IntegerRangeRequest()
 				.from(1)
-				.to(5)
-				.build();
+				.to(5);
 
 		List<String> expectedResponse = List.of("I","II","III","IV","V");
 
@@ -50,10 +49,9 @@ class RomanNumeralApplicationTests {
 
 	@Test
 	void testFullRangeIsGenerated() throws Exception {
-		IntegerRangeRequest request = IntegerRangeRequest.builder()
+		IntegerRangeRequest request = new IntegerRangeRequest()
 				.from(1)
-				.to(3999)
-				.build();
+				.to(3999);
 
 		MvcResult result = mockMvc.perform(post(APP_MAIN_ROUTE)
 						.contentType(MediaType.APPLICATION_JSON)
@@ -67,16 +65,21 @@ class RomanNumeralApplicationTests {
 
 	@Test()
 	void testInvalidInputReturnsBadRequestWithErrorMessage() throws Exception {
-		IntegerRangeRequest request = IntegerRangeRequest.builder()
+		IntegerRangeRequest request = new IntegerRangeRequest()
 				.from(-1)
-				.to(4000)
-				.build();
+				.to(4000);
 
-		ErrorFieldsResponse expectedError = ErrorFieldsResponse.builder()
+		ErrorMessageResponse expectedError = new ErrorMessageResponse()
 				.errorCount(2)
-				.errorFields(Map.of("from", "must be between 1 and 3999",
-									"to", "must be between 1 and 3999"))
-				.build();
+				.errors(List.of(
+						ERROR_MSG_FORMAT.formatted(
+								"from",
+								"must be greater than or equal to 1"),
+						ERROR_MSG_FORMAT.formatted(
+								"to",
+								"must be less than or equal to 3999")
+						)
+				);
 
 		mockMvc.perform(post(APP_MAIN_ROUTE)
 						.contentType(MediaType.APPLICATION_JSON)
@@ -89,15 +92,18 @@ class RomanNumeralApplicationTests {
 
 	@Test()
 	void testInvalidRangeReturnsBadRequestWithRelevantMessage() throws Exception {
-		IntegerRangeRequest request = IntegerRangeRequest.builder()
+		IntegerRangeRequest request = new IntegerRangeRequest()
 				.from(8)
-				.to(7)
-				.build();
+				.to(7);
 
-		ErrorFieldsResponse expectedError = ErrorFieldsResponse.builder()
+		ErrorMessageResponse expectedError = new ErrorMessageResponse()
 				.errorCount(1)
-				.errorFields(Map.of("from", "value 8 cannot be higher than <TO> value 7"))
-				.build();
+				.errors(List.of(
+						ERROR_MSG_FORMAT.formatted(
+								"from",
+								"value 8 cannot be higher than <TO> value 7")
+						)
+				);
 
 		mockMvc.perform(post(APP_MAIN_ROUTE)
 						.contentType(MediaType.APPLICATION_JSON)
@@ -127,14 +133,17 @@ class RomanNumeralApplicationTests {
 
 	@Test
 	void testMissingFieldReturnsBadRequest() throws Exception {
-		IntegerRangeRequest request = IntegerRangeRequest.builder()
-				.from(8)
-				.build();
+		IntegerRangeRequest request = new IntegerRangeRequest()
+				.from(8);
 
-		ErrorFieldsResponse expectedError = ErrorFieldsResponse.builder()
+		ErrorMessageResponse expectedError = new ErrorMessageResponse()
 				.errorCount(1)
-				.errorFields(Map.of("to", "must not be null"))
-				.build();
+				.errors(List.of(
+						ERROR_MSG_FORMAT.formatted(
+								"to",
+								"must not be null")
+						)
+				);
 
 		mockMvc.perform(post(APP_MAIN_ROUTE)
 						.contentType(MediaType.APPLICATION_JSON)
