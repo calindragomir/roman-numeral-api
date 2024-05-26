@@ -1,14 +1,20 @@
 package org.project.romannumeral.service;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.IntStream;
 
 @Slf4j
 @Service
 public class IntegerRomanConverter implements Converter {
+
+    @Getter
+    private final ConcurrentMap<Integer, String> cache = new ConcurrentHashMap<>();
 
     private static final int[] values = {
             1000,
@@ -46,7 +52,15 @@ public class IntegerRomanConverter implements Converter {
      * @return - a string representing the roman numeral associated with the input
      */
     private String integerConverter(int num) {
-        log.debug("Received request for {}", num);
+        log.debug("converting {} into roman numeral", num);
+        Integer numToConvert = num;
+
+        if (cache.containsKey(numToConvert)) {
+            String romanNumeral = cache.get(numToConvert);
+            log.debug("{} found in cache, returning {}", numToConvert, romanNumeral);
+            return romanNumeral;
+        }
+
         StringBuilder sb = new StringBuilder();
         // Check every symbol and stop when num argument becomes 0.
         for (int i = 0; i < values.length && num > 0; i++) {
@@ -54,10 +68,13 @@ public class IntegerRomanConverter implements Converter {
             while (values[i] <= num) {
                 num -= values[i];
                 sb.append(romanNumerals[i]);
-                log.debug("Appended {}" , romanNumerals[i]);
+                log.debug("appended {}" , romanNumerals[i]);
             }
         }
-        // Return the converted number
+
+        String romanNumeral = sb.toString();
+        log.debug("converted {} to {}, storing in cache", numToConvert, romanNumeral);
+        cache.put(numToConvert, romanNumeral);
         return sb.toString();
     }
 
