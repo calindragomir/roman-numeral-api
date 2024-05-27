@@ -1,6 +1,7 @@
 package org.project.romannumeral.api;
 
-import lombok.AllArgsConstructor;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import lombok.extern.slf4j.Slf4j;
 import org.project.openapi.api.ConvertApiDelegate;
 import org.project.openapi.dto.IntegerRangeRequest;
@@ -16,11 +17,17 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/")
-@AllArgsConstructor
 public class RomanNumeralController implements ConvertApiDelegate {
 
     @Autowired
     private final Converter converter;
+
+    private final Timer conversionTimer;
+
+    public RomanNumeralController(Converter converter, MeterRegistry meterRegistry) {
+        this.converter = converter;
+        this.conversionTimer = meterRegistry.timer("convert.integer.method.timed");
+    }
 
     /**
      * Convert a range of integers into Roman Numerals.
@@ -36,7 +43,9 @@ public class RomanNumeralController implements ConvertApiDelegate {
         log.info("Got a request for range between {} and {}", rangeRequest.getFrom(), rangeRequest.getTo());
 
         RangeValidator.validateRange(rangeRequest.getFrom(), rangeRequest.getTo());
-        List<String> converted = converter.convert(rangeRequest.getFrom(), rangeRequest.getTo());
+        List<String> converted = conversionTimer.record(
+                () -> converter.convert(rangeRequest.getFrom(), rangeRequest.getTo())
+        );
 
         return ResponseEntity.ok(converted);
     }

@@ -12,7 +12,7 @@ To build and run the Docker image you can execute the following steps:
 cd <PATH_TO_APP_ROOT_DIR>
 ./mvnw clean install
 docker build -t roman-numerals-api .
-docker run -dp 8080:8080 roman-numerals-api
+docker run -d -p 8080:8080 -p 9090:9090 roman-numerals-api
 ```
 
 To check the application started correctly you can execute:
@@ -29,6 +29,11 @@ docker logs -f $(docker ps -q)
 
 Swagger UI documentation is available at:
 http://localhost:8080/swagger-ui/index.html
+
+### Spring actuator
+
+Spring Actuator information is available at:
+http://localhost:9090/actuator
 
 ### Related pages
 

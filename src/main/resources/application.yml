@@ -1,7 +1,25 @@
+# Name of spring application
 spring:
   application:
     name: romannumeral
 
+# Server port for the API
+server:
+  port: 8080
+
+# Configuration for spring actuator
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# Root logging level for the entire application
 logging:
   level:
     root: INFO
