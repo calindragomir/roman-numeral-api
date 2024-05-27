@@ -4,9 +4,16 @@
 
 This is a Spring Boot application that offers a REST API for converting a range of Integer numbers into Roman Numerals.
 
+### Build and run
+
+- :rocket: [Running the project](docs/run.md)
+
 ### Documentation
 
-Information about the project can be found inside the [docs](docs/README.md) folder.
+- [Context: What are roman numerals?](docs/roman.md)
+- [Project requirements](docs/requirements.md)
+- [Implementation description](docs/description.md)
+- [Future development plans](docs/plans.md)
 
 ### Contributing guide
 

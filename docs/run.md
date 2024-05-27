@@ -1,4 +1,4 @@
-# Documentation
+# Application information
 
 ### Run the application locally
 
@@ -20,6 +20,11 @@ To check the application started correctly you can execute:
 bash tools/run_example.sh
 ```
 
+To check the metrics regarding duration and call count:
+```shell
+bash tools/get_metric.sh
+```
+
 If you need to inspect the logs of the application, you can run:
 ```shell
 docker logs -f $(docker ps -q)
@@ -30,12 +35,7 @@ docker logs -f $(docker ps -q)
 Swagger UI documentation is available at:
 http://localhost:8080/swagger-ui/index.html
 
-### Spring actuator
+### Spring Boot actuator
 
-Spring Actuator information is available at:
+Spring Boot Actuator information is available at:
 http://localhost:9090/actuator
-
-### Related pages
-
-1. Information about roman numerals can be found [here](roman.md)
-2. Future steps for this service can be found [here](plans.md)
