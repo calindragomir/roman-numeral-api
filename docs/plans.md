@@ -28,7 +28,8 @@ The CI/CD pipeline included in this project is quite basic, but can easily be ex
 perform more tasks.<br>
 Things to consider are:
 - sending alert emails on build failures
-- add deployment steps to push packages to different repositories.
+- :warn: The `publish` step is intentionally left out, this needs to be completed to push packages to
+allowed repositories.
 
 ### Add Spring Boot Admin
 The fact that the project uses Spring Boot makes it possible to enable the Spring Boot Admin application.<br>

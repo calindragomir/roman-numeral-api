@@ -37,6 +37,9 @@ target/
 .springBeans
 .sts4-cache
 
+### MVN ###
+dependency-reduced-pom.xml
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
