@@ -32,7 +32,7 @@ class RomanNumeralApplicationTests {
 	ObjectMapper objectMapper;
 
 	@Test
-	void testNormalCaseWorks() throws Exception {
+	void givenIntegerRange_WhenConvertApiIsCalled_thenReturnRomanNumerals() throws Exception {
 		IntegerRangeRequest request = new IntegerRangeRequest()
 				.from(1)
 				.to(5);
@@ -48,7 +48,7 @@ class RomanNumeralApplicationTests {
 	}
 
 	@Test
-	void testFullRangeIsGenerated() throws Exception {
+	void givenFullIntegerRange_WhenConvertApiIsCalled_thenReturnExpectedNumberOfResults() throws Exception {
 		IntegerRangeRequest request = new IntegerRangeRequest()
 				.from(1)
 				.to(3999);
@@ -64,7 +64,7 @@ class RomanNumeralApplicationTests {
 	}
 
 	@Test()
-	void testInvalidInputReturnsBadRequestWithErrorMessage() throws Exception {
+	void givenNegativeInputParameter_WhenConvertApiIsCalled_thenReturnGreaterThanErrorMessage() throws Exception {
 		IntegerRangeRequest request = new IntegerRangeRequest()
 				.from(-1)
 				.to(4000);
@@ -91,7 +91,7 @@ class RomanNumeralApplicationTests {
 	}
 
 	@Test()
-	void testInvalidRangeReturnsBadRequestWithRelevantMessage() throws Exception {
+	void givenAnInvalidRange_WhenConvertApiIsCalled_thenReturnInvalidRangeErrorMessage() throws Exception {
 		IntegerRangeRequest request = new IntegerRangeRequest()
 				.from(8)
 				.to(7);
@@ -114,7 +114,7 @@ class RomanNumeralApplicationTests {
 	}
 
 	@Test()
-	void testNonIntegerInInputReturnsBadRequest() throws Exception {
+	void givenANonIntegerInput_WhenConvertApiIsCalled_thenReturnDeserializationErrorMessage() throws Exception {
 		String inputJson = """
         {
         	"from": 1,
@@ -132,7 +132,7 @@ class RomanNumeralApplicationTests {
 	}
 
 	@Test
-	void testMissingFieldReturnsBadRequest() throws Exception {
+	void givenMissingRequiredField_WhenConvertApiIsCalled_thenReturnMustNotBeNullErrorMessage() throws Exception {
 		IntegerRangeRequest request = new IntegerRangeRequest()
 				.from(8);
 

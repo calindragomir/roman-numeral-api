@@ -24,7 +24,7 @@ public class IntegerRomanConverterTest {
 
     @Test
     @Order(1)
-    void checkConversionIsExecutedCorrectly() {
+    void givenIntegerRange_WhenConverting_thenReturnRomanNumeralsArray() {
         int from = 1;
         int to = 5;
 
@@ -35,7 +35,7 @@ public class IntegerRomanConverterTest {
 
     @Test
     @Order(2)
-    void checkCacheHasBeenPopulated() {
+    void givenPreviousExecution_WhenCheckingCache_thenReturnModifiedCache() {
         assertEquals(5, integerRomanConverter.getCache().size());
     }
 
