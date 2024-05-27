@@ -113,6 +113,7 @@
 						<configOptions>
 							<useBeanValidation>true</useBeanValidation>
 							<useJakartaEe>true</useJakartaEe>
+							<useSpringBoot3>true</useSpringBoot3>
 							<delegatePattern>true</delegatePattern>
 							<serializableModel>true</serializableModel>
 						</configOptions>
