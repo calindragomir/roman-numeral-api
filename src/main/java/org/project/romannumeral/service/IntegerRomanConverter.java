@@ -30,8 +30,23 @@ public class IntegerRomanConverter implements Converter {
             "IX", "V", "IV", "I"
     };
 
+    /**
+     * Implementing the convertor interface
+     *
+     * @param from starting number of the range to convert
+     * @param to inclusive end of range to convert
+     * @return List of Strings with converted integers
+     */
     @Override
     public List<String> convert(Integer from, Integer to) {
+        /*
+        DISCUSSION:
+        We could have used `.parallelStream()` here if the conversion process was more complex.
+        In this case, this adds overhead which does not make sense in the limited range of roman numbers we
+        need to generate.
+        Also, in case of parallel streams the results can be out of order and this means we would need to take
+        care of sorting the output in an ascending manner.
+         */
         return IntStream.rangeClosed(from, to)
                 .boxed()
                 .map(this::integerConverter)
